@@ -1,0 +1,15 @@
+build:
+  runs:
+    - python -m pip install --upgrade pip
+    - python -m pip install -r requirements.txt
+    - black --check .
+
+# Optional: You can include additional steps like testing or linting.
+# test:
+#   runs:
+#     - python -m pytest
+
+# Optional: You can customize the deploy phase as needed.
+deploy:
+  runs:
+    - uvicorn wedding_app.main:app --reload
