@@ -21,3 +21,7 @@ To install all dependencies from `requirements.txt`
 ### `conda env create -f environment.yml`
 
 To import environment from `environment.yml`
+
+### `black .`
+
+This to fix the formatting issues that might caused pipeline blocks
