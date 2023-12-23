@@ -1,8 +1,6 @@
 build:
-  runs:
-    - python -m pip install --upgrade pip
-    - python -m pip install -r requirements.txt
-    - black --check .
+  docker:
+    web: Dockerfile
 
 # Optional: You can include additional steps like testing or linting.
 # test:
@@ -11,4 +9,5 @@ build:
 
 deploy:
   run:
-    web: uvicorn wedding_app.main:app --reload
+    - black --check .
+    - uvicorn wedding_app.main:app --host 0.0.0.0 --port 8000 --reload
