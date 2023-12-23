@@ -9,7 +9,6 @@ build:
 #   runs:
 #     - python -m pytest
 
-# Optional: You can customize the deploy phase as needed.
 deploy:
-  runs:
-    - uvicorn wedding_app.main:app --reload
+  run:
+    web: uvicorn wedding_app.main:app --reload
