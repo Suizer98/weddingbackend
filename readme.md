@@ -25,3 +25,7 @@ To import environment from `environment.yml`
 ### `black .`
 
 This to fix the formatting issues that might caused pipeline blocks
+
+### `heroku stack:set container -a weddingbackend`
+
+This is to setup heroku container for staging uses
