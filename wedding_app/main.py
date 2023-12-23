@@ -1,4 +1,7 @@
+import os
+
 from fastapi import Depends, FastAPI, HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
@@ -35,3 +38,24 @@ def read_users(
 ):
     users = crud.get_users(db, skip=skip, limit=limit, name=name)
     return users
+
+
+@app.get("/exportDB")
+def export_db():
+    db_path = "wedding_app.db"  # Replace with the actual path
+    if os.path.exists(db_path):
+        return FileResponse(
+            db_path, media_type="application/octet-stream", filename="wedding_app.db"
+        )
+    else:
+        raise HTTPException(status_code=404, detail="Database file not found")
+
+
+@app.delete("/deleteDB")
+def delete_db():
+    db_path = "wedding_app.db"  # Replace with the actual path
+    if os.path.exists(db_path):
+        os.remove(db_path)
+        return {"message": "Database file deleted successfully"}
+    else:
+        raise HTTPException(status_code=404, detail="Database file not found")

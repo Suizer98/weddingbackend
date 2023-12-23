@@ -4,3 +4,4 @@ __pycache__
 *.pyd
 /.git
 /venv
+wedding_app.db
