@@ -10,6 +10,6 @@ services:
       - "8000:8000"
     environment:
       - NAME=World
-    command: ["uvicorn", "wedding_app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+    command: ["uvicorn", "wedding_app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--ssl-keyfile", "/app/keyfile.pem", "--ssl-certfile", "/app/certfile.pem"]
     volumes:
       - ./:/app

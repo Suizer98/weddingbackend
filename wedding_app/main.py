@@ -1,4 +1,6 @@
 import os
+from typing import List
+from . import schemas
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,7 +46,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     return crud.create_user(db=db, user=user)
 
 
-@app.get("/users", response_model=list[schemas.User])
+@app.get("/users", response_model=List[schemas.User])
 def read_users(
     skip: int = 0,
     limit: int = 100,
