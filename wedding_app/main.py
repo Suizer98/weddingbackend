@@ -1,6 +1,6 @@
 import os
 from typing import List
-from . import schemas
+from datetime import datetime
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
 from .database import SessionLocal, engine
+from . import schemas
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -61,8 +62,11 @@ def read_users(
 def export_db():
     db_path = "wedding_app.db"  # Replace with the actual path
     if os.path.exists(db_path):
+        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+        filename = f"wedding_app_{timestamp}.db"
+
         return FileResponse(
-            db_path, media_type="application/octet-stream", filename="wedding_app.db"
+            db_path, media_type="application/octet-stream", filename=filename
         )
     else:
         raise HTTPException(status_code=404, detail="Database file not found")
@@ -70,9 +74,18 @@ def export_db():
 
 @app.delete("/deleteDB")
 def delete_db():
-    db_path = "wedding_app.db"  # Replace with the actual path
-    if os.path.exists(db_path):
-        os.remove(db_path)
-        return {"message": "Database file deleted successfully"}
-    else:
-        raise HTTPException(status_code=404, detail="Database file not found")
+    db_prefix = "wedding_app"  # Specify the prefix of the database files
+    db_dir = "."  # Replace with the actual directory path
+
+    db_files = [file for file in os.listdir(db_dir) if file.startswith(db_prefix)]
+
+    if not db_files:
+        raise HTTPException(status_code=404, detail="No matching database files found")
+
+    for file in db_files:
+        file_path = os.path.join(db_dir, file)
+        os.remove(file_path)
+
+    return {
+        "message": f"All database files starting with '{db_prefix}' deleted successfully"
+    }
