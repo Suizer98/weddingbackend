@@ -1,6 +1,8 @@
-# Getting Started with FastAPI App
+# Wedding Backend FastAPI app
 
 This project was created for weddinginvitation frontend app.
+
+Tech stacks: Heroku container, Python FastAPI, Render PostgreSQL
 
 ## Available Scripts
 

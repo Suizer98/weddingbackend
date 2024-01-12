@@ -54,7 +54,7 @@ def read_users(
     key: str = Query(
         ...,
         title="Confirmation Key",
-        description="Enter the confirmation key to delete all users",
+        description="Enter the confirmation key to get all users",
         min_length=1,
     ),
     skip: int = 0,
@@ -75,7 +75,7 @@ def export_db(
     key: str = Query(
         ...,
         title="Confirmation Key",
-        description="Enter the confirmation key to delete all users",
+        description="Enter the confirmation key to download user lists",
         min_length=1,
     ),
     db: Session = Depends(get_db),
