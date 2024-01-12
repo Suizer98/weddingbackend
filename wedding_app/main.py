@@ -1,10 +1,11 @@
-import os
+import pandas as pd
 from typing import List
 from datetime import datetime
+import io
 
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
@@ -59,33 +60,36 @@ def read_users(
 
 
 @app.get("/exportDB")
-def export_db():
-    db_path = "wedding_app.db"  # Replace with the actual path
-    if os.path.exists(db_path):
-        timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
-        filename = f"wedding_app_{timestamp}.db"
+def export_db(db: Session = Depends(get_db)):
+    users = crud.get_users(db)  # Fetch all users from the database
+    if not users:
+        raise HTTPException(status_code=404, detail="No users found")
 
-        return FileResponse(
-            db_path, media_type="application/octet-stream", filename=filename
-        )
-    else:
-        raise HTTPException(status_code=404, detail="Database file not found")
+    # Extract only the columns you want to export
+    columns_to_export = ["id", "name", "allergic", "pax"]
+    data = [{col: getattr(user, col) for col in columns_to_export} for user in users]
+
+    # Convert data to a DataFrame
+    df = pd.DataFrame(data)
+
+    # Create a CSV file with a timestamped filename
+    timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
+    filename = f"guestslist_{timestamp}.csv"
+    df_csv = df.to_csv(index=False)
+
+    # Create a streaming response with the CSV content
+    content = io.BytesIO(df_csv.encode())
+
+    # Set the Content-Disposition header to force download with the specified filename
+    headers = {
+        "Content-Disposition": f'attachment; filename="{filename}"',
+        "Content-Type": "text/csv",
+    }
+
+    return StreamingResponse(content, headers=headers)
 
 
-# @app.delete("/deleteDB")
-# def delete_db():
-#     db_prefix = "wedding_app"  # Specify the prefix of the database files
-#     db_dir = "."  # Replace with the actual directory path
-
-#     db_files = [file for file in os.listdir(db_dir) if file.startswith(db_prefix)]
-
-#     if not db_files:
-#         raise HTTPException(status_code=404, detail="No matching database files found")
-
-#     for file in db_files:
-#         file_path = os.path.join(db_dir, file)
-#         os.remove(file_path)
-
-#     return {
-#         "message": f"All database files starting with '{db_prefix}' deleted successfully"
-#     }
+@app.delete("/deleteDB")
+def delete_db(db: Session = Depends(get_db)):
+    crud.delete_all_users(db)
+    return {"message": "All users deleted successfully"}

@@ -2,7 +2,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
-import os 
+import os
 
 # SQLALCHEMY_DATABASE_URL = "sqlite:///./wedding_app.db"
 # SQLALCHEMY_DATABASE_URL = "postgresql://user:password@postgresserver/db"
@@ -21,7 +21,9 @@ import os
 SQLALCHEMY_DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL")
 
 if SQLALCHEMY_DATABASE_URL is None:
-    raise ValueError("Database URL is not set. Make sure to set the SQLALCHEMY_DATABASE_URL environment variable.")
+    raise ValueError(
+        "Database URL is not set. Make sure to set the SQLALCHEMY_DATABASE_URL environment variable."
+    )
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)

@@ -29,3 +29,7 @@ This to fix the formatting issues that might caused pipeline blocks
 ### `heroku stack:set container -a weddingbackend`
 
 This is to setup heroku container for staging uses
+
+### `heroku config:set SQLALCHEMY_DATABASE_URL="postgresql://{user}:pw@{hostname}.{yourhostingwebsite}.com/wedding_db_lgif" -a weddingbackend`
+
+You can store the env variable somewhere using .env or setting this inside your heroku container so it don't get exposed
