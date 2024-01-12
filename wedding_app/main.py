@@ -72,20 +72,20 @@ def export_db():
         raise HTTPException(status_code=404, detail="Database file not found")
 
 
-@app.delete("/deleteDB")
-def delete_db():
-    db_prefix = "wedding_app"  # Specify the prefix of the database files
-    db_dir = "."  # Replace with the actual directory path
+# @app.delete("/deleteDB")
+# def delete_db():
+#     db_prefix = "wedding_app"  # Specify the prefix of the database files
+#     db_dir = "."  # Replace with the actual directory path
 
-    db_files = [file for file in os.listdir(db_dir) if file.startswith(db_prefix)]
+#     db_files = [file for file in os.listdir(db_dir) if file.startswith(db_prefix)]
 
-    if not db_files:
-        raise HTTPException(status_code=404, detail="No matching database files found")
+#     if not db_files:
+#         raise HTTPException(status_code=404, detail="No matching database files found")
 
-    for file in db_files:
-        file_path = os.path.join(db_dir, file)
-        os.remove(file_path)
+#     for file in db_files:
+#         file_path = os.path.join(db_dir, file)
+#         os.remove(file_path)
 
-    return {
-        "message": f"All database files starting with '{db_prefix}' deleted successfully"
-    }
+#     return {
+#         "message": f"All database files starting with '{db_prefix}' deleted successfully"
+#     }
