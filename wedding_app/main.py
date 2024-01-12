@@ -2,8 +2,9 @@ import pandas as pd
 from typing import List
 from datetime import datetime
 import io
+import os
 
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
@@ -50,17 +51,39 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
 
 @app.get("/users", response_model=List[schemas.User])
 def read_users(
+    key: str = Query(
+        ...,
+        title="Confirmation Key",
+        description="Enter the confirmation key to delete all users",
+        min_length=1,
+    ),
     skip: int = 0,
     limit: int = 100,
     name: str = None,  # Added query parameter for name
     db: Session = Depends(get_db),
 ):
+    secret_key = os.getenv("SECRETKEY")
+    if key != secret_key:
+        raise HTTPException(status_code=401, detail="Invalid confirmation key")
+
     users = crud.get_users(db, skip=skip, limit=limit, name=name)
     return users
 
 
 @app.get("/exportDB")
-def export_db(db: Session = Depends(get_db)):
+def export_db(
+    key: str = Query(
+        ...,
+        title="Confirmation Key",
+        description="Enter the confirmation key to delete all users",
+        min_length=1,
+    ),
+    db: Session = Depends(get_db),
+):
+    secret_key = os.getenv("SECRETKEY")
+    if key != secret_key:
+        raise HTTPException(status_code=401, detail="Invalid confirmation key")
+
     users = crud.get_users(db)  # Fetch all users from the database
     if not users:
         raise HTTPException(status_code=404, detail="No users found")
@@ -90,6 +113,18 @@ def export_db(db: Session = Depends(get_db)):
 
 
 @app.delete("/deleteDB")
-def delete_db(db: Session = Depends(get_db)):
+def delete_db(
+    key: str = Query(
+        ...,
+        title="Confirmation Key",
+        description="Enter the confirmation key to delete all users",
+        min_length=1,
+    ),
+    db: Session = Depends(get_db),
+):
+    secret_key = os.getenv("SECRETKEY")
+    if key != secret_key:
+        raise HTTPException(status_code=401, detail="Invalid confirmation key")
+
     crud.delete_all_users(db)
     return {"message": "All users deleted successfully"}

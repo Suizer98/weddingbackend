@@ -30,6 +30,15 @@ This to fix the formatting issues that might caused pipeline blocks
 
 This is to setup heroku container for staging uses
 
-### `heroku config:set SQLALCHEMY_DATABASE_URL="postgresql://{user}:pw@{hostname}.{yourhostingwebsite}.com/wedding_db_lgif" -a weddingbackend`
+### `Storing your postgresql password and secretkey`
+
+```
+heroku config:set SQLALCHEMY_DATABASE_URL="postgresql://{user}:pw@{hostname}.{yourhostingwebsite}.com/wedding_db_lgif" -a weddingbackend
+heroku config:set SECRETKEY=xxxx -a weddingbackend
+```
+```.env
+SQLALCHEMY_DATABASE_URL=postgresql://
+SECRETKEY=xxxx
+```
 
 You can store the env variable somewhere using .env or setting this inside your heroku container so it don't get exposed
