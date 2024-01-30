@@ -20,7 +20,7 @@ app = FastAPI()
 # Configure CORS
 origins = [
     "http://localhost:3000",  # Add the origin of your frontend app
-    "https://tranquil-clafoutis-bd9fcb.netlify.app",  # Add more origins as needed
+    "https://suizerlyciawedding.netlify.app",  # Add more origins as needed
 ]
 
 app.add_middleware(
