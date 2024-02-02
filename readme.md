@@ -8,7 +8,7 @@ Tech stacks: Heroku container, Python FastAPI, Render PostgreSQL
 
 In the project directory, you can run:
 
-### `uvicorn sql_app.main:app --reload`
+### `uvicorn wedding_app.main:app --reload`
 
 Runs the app in the development mode.\
 Open [http://localhost:8000/docs](http://localhost:8000/docs) to view it in the browser.
@@ -41,6 +41,8 @@ heroku config:set SECRETKEY=xxxx -a weddingbackend
 ```.env
 SQLALCHEMY_DATABASE_URL=postgresql://
 SECRETKEY=xxxx
+USER=xx
+PASSWORD=xxx
 ```
 
 You can store the env variable somewhere using .env or setting this inside your heroku container so it don't get exposed

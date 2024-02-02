@@ -4,9 +4,10 @@ from datetime import datetime
 import io
 import os
 
-from fastapi import Depends, FastAPI, HTTPException, Query
+from fastapi import Depends, FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from sqlalchemy.orm import Session
 
 from . import crud, models, schemas
@@ -16,11 +17,12 @@ from . import schemas
 models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
+security = HTTPBasic()
 
 # Configure CORS
 origins = [
-    "http://localhost:3000",  # Add the origin of your frontend app
-    "https://suizerlyciawedding.netlify.app",  # Add more origins as needed
+    # Add the origin of your frontend app
+    "https://suizerlyciawedding.netlify.app",
 ]
 
 app.add_middleware(
@@ -39,6 +41,22 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+@app.get("/")
+async def get_docs(credentials: HTTPBasicCredentials = Depends(security)):
+    correct_username = os.getenv("USER")
+    correct_password = os.getenv("PASSWORD")
+    if not (
+        credentials.username == correct_username
+        and credentials.password == correct_password
+    ):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Incorrect email or password",
+            headers={"WWW-Authenticate": "Basic realm='Restricted Area'"},
+        )
+    return {"message": "You are authenticated"}
 
 
 @app.post("/users", response_model=schemas.User)
