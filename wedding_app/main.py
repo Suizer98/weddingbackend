@@ -47,7 +47,7 @@ def get_db():
 @app.get("/")
 async def get_docs(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = os.getenv("USER")
-    correct_password = os.getenv("PASSWORD")
+    correct_password = os.getenv("SECRETKEY")
     if not (
         credentials.username == correct_username
         and credentials.password == correct_password
