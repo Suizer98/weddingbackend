@@ -1,8 +1,8 @@
 {
     "builds": [
-      {"src": "wedding_db/main.py", "use": "@vercel/python"}
+      {"src": "wedding_app/main.py", "use": "@vercel/python"}
     ],
     "routes": [
-      {"src": "/(.*)", "dest": "/wedding_db/main.py"}
+      {"src": "/(.*)", "dest": "/wedding_app/main.py"}
     ]
   }
