@@ -3,6 +3,7 @@ from typing import List
 from datetime import datetime
 import io
 import os
+import uvicorn
 
 from fastapi import Depends, FastAPI, HTTPException, Query, status
 from fastapi.middleware.cors import CORSMiddleware
@@ -146,3 +147,7 @@ def delete_db(
 
     crud.delete_all_users(db)
     return {"message": "All users deleted successfully"}
+
+
+if __name__ == "__main__":
+    uvicorn.run("server.api:app", host="0.0.0.0", port=8000, reload=True)
