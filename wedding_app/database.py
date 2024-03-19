@@ -18,7 +18,9 @@ import os
 # POSTGRES_PORT = "5432"
 # POSTGRES_DB = "wedding_db_lgif"
 # SQLALCHEMY_DATABASE_URL = f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
+
 SQLALCHEMY_DATABASE_URL = os.getenv("SQLALCHEMY_DATABASE_URL")
+# SQLALCHEMY_DATABASE_URL = "postgresql://suizer:yourpassword@db/wedding_db_lgif"
 
 if SQLALCHEMY_DATABASE_URL is None:
     raise ValueError(

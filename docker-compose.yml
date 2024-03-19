@@ -10,7 +10,20 @@ services:
       - "8000:8000"
     env_file:
       - .env
-    command: ["uvicorn", "wedding_app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
     # command: ["uvicorn", "wedding_app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload", "--ssl-keyfile", "/app/keyfile.pem", "--ssl-certfile", "/app/certfile.pem"]
     volumes:
-      - ./:/app
+      - ./wedding_app:/app/wedding_app:ro
+    depends_on:
+      - db
+
+  db:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+
+volumes:
+  postgres_data:
