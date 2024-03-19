@@ -2,7 +2,7 @@
 
 This project was created for weddinginvitation frontend app.
 
-Tech stacks: Heroku container, Python FastAPI, Render PostgreSQL
+Tech stacks: Render container (previously Heroku container), Python FastAPI, Render PostgreSQL
 
 ## Available Scripts
 
