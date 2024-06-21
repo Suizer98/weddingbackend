@@ -1,6 +1,6 @@
 # Wedding Backend FastAPI app
 
-This project was created for weddinginvitation frontend app.
+This project was created to comply with weddinginvitation [frontend app](https://github.com/Suizer98/weddinginvitation)
 
 Tech stacks: Render container (previously Heroku container), Python FastAPI, Render PostgreSQL
 
@@ -42,6 +42,8 @@ conda env create -f environment.yml
 We should fix the formatting issues that might caused pipeline blocks
 ```
 black .
+OR
+docker exec weddingbackend black .
 ```
 
 ### Staging environment (Heroku, Render...)
@@ -66,4 +68,4 @@ PASSWORD=xxx
 ```
 
 You can store the env variable somewhere using .env or setting this inside your heroku container so it don't get exposed. 
-For Render just find `Environment Variable` and key in manually.
+For Render just find `Environment Variable`in deploy section and key in manually.
